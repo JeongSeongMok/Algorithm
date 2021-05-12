@@ -59,14 +59,15 @@ void dp(int size, item data[MAX_SIZE+1], int W) {   //dynamic programming
 			else dp_memo[i][j]= dp_memo[i][j-1];
 			result=max(result,dp_memo[i][j]);
 
-			end = clock();
+			
+		}
+	}
+end = clock();
 			duration = double(end-start)/CLOCKS_PER_SEC;
 			if(duration>TIME_LIMIT) {
 				fout<<"\t\tTIMEOUT\t\t";
 				return;  
 			}
-		}
-	}
 	fout.precision(9);
 	fout<<"\t"<<result;
 	fout.precision(6);
@@ -75,6 +76,7 @@ void dp(int size, item data[MAX_SIZE+1], int W) {   //dynamic programming
 		delete [] dp_memo[i];
 	}
 	delete [] dp_memo;
+return;
 }
 
 void greedy(int size, item input[MAX_SIZE+1], int W){  // greedy algorithm
@@ -89,13 +91,7 @@ void greedy(int size, item input[MAX_SIZE+1], int W){  // greedy algorithm
 	int curr_weight=0;
 	double result=0;
 	for(int i=1;i<=size;i++){
-		end = clock();
-		duration = double(end-start)/CLOCKS_PER_SEC;
-		if(duration>TIME_LIMIT) {
-			fout<<"\t\tTIMEOUT"<<"\t";
-			//printf("greedy: TIMEOUT\n");
-			return;  
-		}
+		
 		if(curr_weight+data[i].w<=W){
 			curr_weight+=data[i].w;
 			result += double(data[i].v);
@@ -104,11 +100,19 @@ void greedy(int size, item input[MAX_SIZE+1], int W){  // greedy algorithm
 			result+=(W-curr_weight)*data[i].v_per_w();
 			break;
 		}
-	}	
+	}
+end = clock();
+		duration = double(end-start)/CLOCKS_PER_SEC;
+		if(duration>TIME_LIMIT) {
+			fout<<"\t\tTIMEOUT"<<"\t";
+			//printf("greedy: TIMEOUT\n");
+			return;  
+		}	
 	fout.precision(9);
 	fout<<"\t"<<result;
 	fout.precision(6);
 	fout<<"\t"<<round(duration*1000)/1000<<"ms\t";
+return;
 }
 
 void branch_bound(int size, item input[MAX_SIZE+1], int W){  // branch and bound
@@ -181,17 +185,19 @@ void branch_bound(int size, item input[MAX_SIZE+1], int W){  // branch and bound
 			q.push(temp);
 		}
 		q.pop();
-		end = clock();
+		
+	}
+end = clock();
 		duration = double(end-start)/CLOCKS_PER_SEC;
 		if(duration>TIME_LIMIT) {
 			fout<<"\t\t\tTIMEOUT\t";
 			return;  
 		}
-	}
 	fout.precision(9);
 	fout<<"\t\t"<<max_benefit;
 	fout.precision(6);
 	fout<<"\t"<<round(duration*1000)/1000<<"ms\t";
+return ;
 }
 
 int main() {	
@@ -225,11 +231,3 @@ int main() {
 	return 0;
 }
 
-
-/*Reference
-rand() https://yeolco.tistory.com/64
-fractoinal knapsack, branch and bound : 교수님 강의영상
-class sorting https://m.blog.naver.com/ndb796/221227975229
-fstream https://m.blog.naver.com/PostView.nhn?blogId=tkdldjs35&logNo=221308244184&proxyReferer=https:%2F%2Fwww.google.com%2F
-priority queue of structure https://unluckyjung.github.io/cpp/2020/06/27/Priority_Queue_Compare/
-*/
